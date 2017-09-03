@@ -1,0 +1,6 @@
+* close ports
+* change default ports
+* change Apache configuration
+* only key logging
+* do not allow root logging
+* set better group/owner for the served file
