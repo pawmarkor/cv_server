@@ -1,0 +1,63 @@
+# require Ansible version >= 2.0
+---
+- hosts: all
+  sudo: yes
+  tasks:
+  - name: copy cv sources
+    copy:
+      src: ./cv_sources
+      dest: /home/vagrant/
+  - name: copy fonts
+    copy:
+      src: ./fonts/
+      dest: /usr/share/fonts/
+  - name: reload fonts
+    command: fc /usr/share/fonts/
+  - name: ensure apache is at the latest version
+    yum: 
+      name: httpd
+      state: latest
+  - name: ensure apache is running (and enable it at boot)
+    service: 
+      name: httpd
+      state: started
+      enabled: yes
+  - name: remove yum timeout
+    lineinfile:
+      path: "/etc/yum.conf"
+      regexp: "^timeout=.*"
+      state: absent
+  - name: set yum timeout
+    lineinfile:
+      path: "/etc/yum.conf"
+      line: "timeout=7200"
+      insertafter: "[main]"
+  - name: install LaTeX
+    yum:
+      name: "{{ item }}"
+      state: latest
+    with_items:
+      - texlive
+      - texlive-latex
+      - texlive-xetex
+      - texlive-collection-latex
+      - texlive-collection-latexrecommended
+      - texlive-xetex-def
+      - texlive-collection-xetex
+  - name: compile cv
+    command: xelatex cv.tex chdir=/home/vagrant/cv_sources/
+  - name: compile cv again
+    command: xelatex cv.tex chdir=/home/vagrant/cv_sources/
+  - name: copy pdf to be served
+    copy:
+     src: /home/vagrant/cv_sources/cv.pdf
+     remote_src: yes
+     dest: /var/www/html/
+    notify:
+      - restart apache
+#  - name: close all ports except of 80
+#    script: ./close_ports.sh
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
+
