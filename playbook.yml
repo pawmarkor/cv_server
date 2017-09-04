@@ -55,8 +55,6 @@
      dest: /var/www/html/
     notify:
       - restart apache
-#  - name: close all ports except of 80
-#    script: ./close_ports.sh
   handlers:
     - name: restart apache
       service: name=httpd state=restarted
