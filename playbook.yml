@@ -15,8 +15,7 @@
     command: fc /usr/share/fonts/
   - name: ensure apache is at the latest version
     yum: 
-      name: httpd
-      state: latest
+      name: httpd-2.4.6
   - name: ensure apache is running (and enable it at boot)
     service: 
       name: httpd
@@ -35,15 +34,14 @@
   - name: install LaTeX
     yum:
       name: "{{ item }}"
-      state: latest
     with_items:
-      - texlive
-      - texlive-latex
-      - texlive-xetex
-      - texlive-collection-latex
-      - texlive-collection-latexrecommended
-      - texlive-xetex-def
-      - texlive-collection-xetex
+      - texlive-2012
+      - texlive-latex-svn27907.0
+      - texlive-xetex-svn26330.0.9997.5
+      - texlive-collection-latex-svn25030.0
+      - texlive-collection-latexrecommended-svn25795.0
+      - texlive-xetex-def-svn29154.0.95
+      - texlive-collection-xetex-svn29634.0
   - name: compile cv
     command: xelatex cv.tex chdir=/home/vagrant/cv_sources/
   - name: compile cv again
