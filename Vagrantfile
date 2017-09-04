@@ -1,3 +1,4 @@
+# tested on Vagrant version 1.9.8
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 

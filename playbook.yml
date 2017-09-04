@@ -1,4 +1,4 @@
-# require Ansible version >= 2.0
+# tested on Ansible version 2.3.2.0
 ---
 - hosts: all
   sudo: yes

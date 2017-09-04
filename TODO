@@ -4,3 +4,4 @@
 * only key logging
 * do not allow root logging
 * set better group/owner for the served file
+* specify versions of installed packages
